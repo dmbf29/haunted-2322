@@ -1,0 +1,40 @@
+<div class="banner" style="background-image: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)), url(<%= @house.banner_url %>);">
+  <div class="container">
+    <h1><%= @house.name %></h1>
+    <button data-bs-toggle="modal" data-bs-target="#monsterModal" class="btn btn-danger mt-2">
+      Summon Monster
+    </button>
+  </div>
+</div>
+<div class="container my-3">
+  <div class="cards">
+    <% @house.monsters.each do |monster| %>
+      <div class="card-category" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(<%= monster.image_url %>)">
+        <%= monster.name %>
+        <%= link_to monster_path(monster),
+            class: 'card-remove-link',
+            data: { turbo_method: :delete, turbo_confirm: "Destroy #{monster.name}?"} do %>
+          <i class="fa-solid fa-cross"></i>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="monsterModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Summon Monster</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <%= simple_form_for [@house, @monster] do |f| %>
+          <%= f.input :name %>
+          <%= f.input :image_url %>
+          <%= f.submit 'Summon', class: 'btn btn-danger mt-2' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
